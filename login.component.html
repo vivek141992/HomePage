@@ -1,0 +1,77 @@
+<div id="homepage">
+    <div class="background-wrapper">
+        <span class="background-img"></span>
+        <span class="background-img"></span>
+        <span class="background-img"></span>
+        <span class="background-img"></span>
+    </div>
+    <div class="content-wrapper">
+        <div class="content">
+            <div style="display: flex; flex-direction: column;">
+                <div fxLayout="row" fxLayoutAlign="end center" style="padding: 16px;">
+                    <mat-icon>translate</mat-icon>
+                    <mat-select name="currentLanguage" style="width: 80px;"
+                                [(ngModel)]="currentLanguage" (ngModelChange)="setLanguage(currentLanguage)"
+                                [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let lang of languagesList" [value]="lang.Code">
+                            {{ lang.Translation || lang.Name }}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div class="login-container" fxLayout="column" fxLayoutAlign="center center">
+                    <div class="login-box mat-elevation-z2" fxLayout="row" fxLayoutAlign="center center">
+                        <sc-block-spinner [loading]="isLoading"></sc-block-spinner>
+                        <div *ngIf="!isLoading" style="width: 100%">
+                            <div>
+                                <h1 class="text-center">
+                                    <img src="assets/img/logo-green@2x.png" class="logo" alt="SchoolCafé"><br/>
+                                    <small class="logo-text">
+                                        {{ 'SIGN_IN.CONNECTING_SCHOOL_NUTRITION' | translate }}
+                                    </small>
+                                </h1>
+                                <mat-divider style="margin: 12px 0"></mat-divider>
+                                <sc-login-form *ngIf="isServiceAvailable"></sc-login-form>
+                            </div>
+                            <div *ngIf="!isServiceAvailable"
+                                 fxLayout="column" fxLayoutAlign="center center">
+                                <mat-icon style="font-size: 52px; width: 52px; height: 52px; color: #FF9100">
+                                    error
+                                </mat-icon>
+                                <div class="text-center" style="line-height: 1.5em; max-width: 100%;">
+                                    <h2 [innerHTML]="'SIGN_IN.IDENTIFIED_ISSUE' | translate" style="margin: 6px 0"></h2>
+                                    <h2 [innerHTML]="'SIGN_IN.ISSUE_COME_BACK_LATER' | translate" style="margin-top: 6px"></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="isServiceAvailable" class="district-box mat-elevation-z2" style="margin-top: 24px">
+                        <div>
+                            <h2 class="text-center mat-elevation-z2">
+                                {{ 'SIGN_IN.NEED_ACCOUNT' | translate }}
+                            </h2>
+                            <div *ngIf="platform.IOS">
+                                <button id="goToDistrict" mat-stroked-button type="button" color="accent" style="width: 100%"
+                                        (click)="openFindMyDistrictDialog()">
+                                    {{ 'SIGN_IN.FIND_DISTRICT' | translate }}
+                                </button>
+                            </div>
+                            <sc-find-my-district *ngIf="!platform.IOS"></sc-find-my-district>
+                        </div>
+                    </div>
+                    <div *ngIf="environment.web" fxLayout="row wrap" fxLayoutAlign="center center" style="padding: 24px 0 0 0">
+                        <a id="appStore" [href]="environment.appleShortURL" target="_blank" style="margin: 0 6px">
+                            <img src="assets/img/badge-app-store.png" alt="App Store" style="height: 50px;">
+                        </a>
+                        <a id="playStore" [href]="environment.googleShortURL" target="_blank" style="margin: 0 6px">
+                            <img src="assets/img/badge-google-play.png" alt="Play Store" style="height: 50px;">
+                        </a>
+                    </div>
+                </div>
+                <sc-footer [isSessionActive]="false" [socialIcons]="true" [isHomePage]="true"></sc-footer>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" fxHide.xs fxHide.sm mat-raised-button class="float-button" (click)="openFAQDialog()">
+    {{ 'DIALOGS.FAQ.TITLE' | translate }}
+</button>
